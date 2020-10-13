@@ -5,13 +5,13 @@ import com.google.gson.annotations.SerializedName;
 public class GitHubCommit {
 
     @SerializedName("sha")
-    private String message;
+    private String commit;
 
     @SerializedName("commit")
     private NestedCommit nestedCommit;
 
-    @SerializedName("message")
-    private String commit;
+    @SerializedName(value = "message")
+    private String message;
 
     public GitHubCommit(
             String commit,
