@@ -1,6 +1,7 @@
 package com.example.githubapidemo;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +18,8 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import android.widget.TextView;
 import android.widget.Toast;
 
 import adapter.CommitAdapter;
@@ -27,11 +30,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.widget.LinearLayout.HORIZONTAL;
+
 public class MainActivity extends AppCompatActivity {
 
+    //Username and repo for this demo project
     private String Username = "raviponda1704";
     private String RepoDetails = "GithubApidemo";
 
+    TextView commitHeaderTV ;
     RecyclerView mRecyclerView;
     List<GitHubCommit> myDataSource = new ArrayList<>();
     RecyclerView.Adapter myAdapter;
@@ -40,6 +47,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        commitHeaderTV = findViewById(R.id.commit_details);
+        commitHeaderTV.setText(Username + "-" + RepoDetails);
+
+        DividerItemDecoration itemDecor = new DividerItemDecoration(this, HORIZONTAL);
+        mRecyclerView.addItemDecoration(itemDecor);
 
         mRecyclerView=  findViewById(R.id.commit_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));

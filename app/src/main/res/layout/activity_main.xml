@@ -8,13 +8,13 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/userName"
+        android:id="@+id/commit_details"
         style="@style/TextAppearance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:paddingLeft="16dp"
-        android:paddingTop="16dp" />
+        android:textSize="18dp"
+        android:paddingTop="18dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/commit_recycler_view"
