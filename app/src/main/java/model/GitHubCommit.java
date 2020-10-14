@@ -10,7 +10,7 @@ public class GitHubCommit {
     @SerializedName("commit")
     private NestedCommit nestedCommit;
 
-    @SerializedName(value = "message")
+    @SerializedName("message")
     private String message;
 
     public GitHubCommit(
