@@ -49,10 +49,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         commitHeaderTV = findViewById(R.id.commit_details);
-        commitHeaderTV.setText(Username + "-" + RepoDetails);
-
-        DividerItemDecoration itemDecor = new DividerItemDecoration(this, HORIZONTAL);
-        mRecyclerView.addItemDecoration(itemDecor);
+        commitHeaderTV.setText(Username + " - " + RepoDetails);
 
         mRecyclerView=  findViewById(R.id.commit_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
