@@ -4,14 +4,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
 
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.widget.Toast;
 
 import adapter.CommitAdapter;
 import clienApi.ClientApi;
@@ -42,8 +48,15 @@ public class MainActivity extends AppCompatActivity {
 
         mRecyclerView.setAdapter(myAdapter);
 
-        //Fetch Commit Data
-        fetchCommitData();
+        //checking for network connectivity
+        if (!isNetworkAvailable()) {
+            Toast toast = Toast.makeText(this,"Check network connection !!", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        } else {
+            //Fetch Commit Data
+            fetchCommitData();
+        }
     }
 
     public void fetchCommitData(){
@@ -56,20 +69,34 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<GitHubCommit>>() {
             @Override
             public void onResponse(Call<List<GitHubCommit>> call, Response<List<GitHubCommit>> response) {
-
-                Log.d("Commits2",call.request().url().toString());
-                Log.d("Commits2", new Gson().toJson(response.body()));
-                myDataSource.clear();
-                myDataSource.addAll(response.body());
-                myAdapter.notifyDataSetChanged();
+                if (response.isSuccessful()) {
+                    myDataSource.clear();
+                    myDataSource.addAll(response.body());
+                    myAdapter.notifyDataSetChanged();
+                }else{
+                    Toast.makeText(MainActivity.this,
+                            "Request failed. Something went wrong !!",
+                            Toast.LENGTH_SHORT).show();
+                    Log.e("Commit", response.message());
+                }
             }
 
             @Override
             public void onFailure(Call<List<GitHubCommit>> call, Throwable t) {
                 // Log error here since request failed
+                Toast.makeText(MainActivity.this,
+                        "Request failed. Check your internet connection",
+                        Toast.LENGTH_SHORT).show();
                 Log.e("Commit", t.toString());
             }
 
         });
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
